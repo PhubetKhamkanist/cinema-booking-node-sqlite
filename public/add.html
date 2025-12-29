@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เพิ่มข้อมูลหนัง</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #235D3A, #C8EAD1);
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            background-color: #397D54;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            /* Center the form */
+        }
+
+        .form-control {
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #444;
+            margin: 5px;
+        }
+
+        label {
+            color: #e4e4e6;
+        }
+
+        input[type="submit"] {
+            margin-top: 10px;
+            background-color: #235D3A;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #C8EAD1;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #235D3A;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #C8EAD1;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>เพิ่มข้อมูลหนัง</h1>
+    <div class="form-container">
+        <form action="/add_process" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="image">เลือกไฟล์รูปภาพ:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="MovieId">รหัสหนัง:</label>
+                <input type="text" class="form-control" id="MovieId" name="MovieId" required />
+            </div>
+            <div class="form-group">
+                <label for="Title">ชื่อเรื่อง:</label>
+                <input type="text" class="form-control" id="Title" name="Title" required />
+            </div>
+            <div class="form-group">
+                <label for="Genre">ประเภท:</label>
+                <input type="text" class="form-control" id="Genre" name="Genre" required />
+            </div>
+            <div class="form-group">
+                <label for="Duration">ระยะเวลา:</label>
+                <input type="text" class="form-control" id="Duration" name="Duration" required />
+            </div>
+
+            <div class="form-group">
+                <label for="Director">ผู้กำกับ:</label>
+                <input type="text" class="form-control" id="Director" name="Director" required />
+            </div>
+            <div class="form-group">
+                <label for="Rating">คะแนน:</label>
+                <input type="text" class="form-control" id="Rating" name="Rating" required />
+            </div>
+            <div class="form-group">
+                <label for="ReleaseDate">วันที่เริ่มฉาย:</label>
+                <input type="text" class="form-control" id="ReleaseDate" name="ReleaseDate" required />
+            </div>
+            <div class="form-group">
+                <label for="ReleaseDate">วันที่ฉาย:</label>
+                <input type="text" class="form-control" id="showdate" name="showdate" required />
+            </div>
+            <div class="form-group">
+                <label for="ReleaseDate">รหัสโรงภาพยนตร์:</label>
+                <input type="text" class="form-control" id="cinema1" name="cinema1" required />
+            </div>
+            <div class="form-group">
+                <label for="ReleaseDate">รอบฉาย1:</label>
+                <input type="text" class="form-control" id="showtime1" name="showtime1" required />
+            </div>
+            <div class="form-group">
+                <label for="ReleaseDate">รอบฉาย2:</label>
+                <input type="text" class="form-control" id="showtime2" name="showtime2" required />
+            </div>
+            <div class="form-group">
+                <label for="Synopsis">เรื่องย่อ:</label>
+                <textarea class="form-control" rows="5" id="Synopsis" name="Synopsis" required></textarea>
+            </div>
+
+            <input type="submit" value="เพิ่ม">
+        </form>
+        <a href="/main_bun">กลับหน้าหลัก</a>
+    </div>
+
+</body>
+
+</html>

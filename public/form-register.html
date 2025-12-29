@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #4b0082, #800080);
+        }
+        /*พื้นหลัง*/
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        .stars::before,
+        .stars::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: transparent;
+            background: radial-gradient(white 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            animation: moveStars 50s linear infinite;
+        }
+
+        .stars::after {
+            background-size: 100px 100px;
+            animation-duration: 100s;
+            opacity: 0.5;
+        }
+
+        @keyframes moveStars {
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .c {
+            background-color: #430f74;
+        }
+
+        .login {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .login a {
+            text-decoration: none;
+            color: #430f74;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .card-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .form-control {
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars"></div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-sm-12"> <!-- เพิ่ม class col-sm-12 -->
+                <div class="card shadow">
+                    <div class="card-header c text-white text-center">
+                        <h3>สมัครสมาชิก</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="registerForm">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="username">ชื่อผู่ใช้:</label>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="ป้อนชื่อผู้ใช้ของคุณ" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="password">รหัสผ่าน:</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="ป้อนรหัสผ่านของคุณ" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="confirm_password">ยืนยันรหัสผ่าน:</label>
+                                    <input type="password" class="form-control" id="confirm_password" placeholder="ยืนยันรหัสผ่านของคุณ" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email">อีเมลล์:</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="ป้อนอีเมลล์ของคุณ" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="phone">หมายเลขโทรศัพท์:</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="ป้อนหมายเลขโทรศัพท์ของคุณ" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="address">ที่อยู่:</label>
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="ป้อนที่อยู่ของคุณ">
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary c btn-block">ยืนยัน</button>
+                            </div>
+                            <div class="form-group login">
+                                <a href="/login">เข้าสู่ระบบ</a>
+                            </div>
+                        </form>
+                        <div id="responseMessage" style="margin-top: 15px;"></div> <!-- สำหรับแสดงข้อความตอบกลับ -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#registerForm').on('submit', function (event) {
+                event.preventDefault(); // ป้องกันการรีเฟรชหน้าเมื่อส่งฟอร์ม
+
+                var password = $('#password').val();
+                var confirmPassword = $('#confirm_password').val();
+
+                // ตรวจสอบรหัสผ่าน
+                var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+                if (!passwordPattern.test(password)) {
+                    $('#responseMessage').text("รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษรและประกอบด้วยทั้งตัวอักษรและตัวเลข");
+                    $('#responseMessage').css('color', 'red');
+                    return false;
+                }
+
+                // ตรวจสอบความตรงกันของรหัสผ่าน
+                if (password !== confirmPassword) {
+                    $('#responseMessage').text("รหัสผ่านไม่ตรงกัน");
+                    $('#responseMessage').css('color', 'red');
+                    return false;
+                }
+
+                // ส่งข้อมูลฟอร์มผ่าน AJAX
+                $.ajax({
+                    url: '/process_get',
+                    method: 'GET',
+                    data: $('#registerForm').serialize(),
+                    success: function (response) {
+                        if (response.status === 'fail') {
+                            $('#responseMessage').text(response.message); // แสดงข้อความ error
+                            $('#responseMessage').css('color', 'red');
+                        } else if (response.status === 'success') {
+                            $('#responseMessage').text(response.message); // แสดงข้อความสำเร็จ
+                            $('#responseMessage').css('color', 'green');
+                            $('#registerForm')[0].reset(); // เคลียร์ฟอร์ม
+                        }
+                    },
+                    error: function () {
+                        $('#responseMessage').text("เกิดข้อผิดพลาดจากเซิร์ฟเวอร์");
+                        $('#responseMessage').css('color', 'red');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

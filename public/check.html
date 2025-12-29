@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Scanner</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        video {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #status {
+            font-size: 18px;
+            font-weight: bold;
+            color: blue;
+            margin-bottom: 10px;
+        }
+
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: green;
+        }
+        #back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ระบบตรวจตั๋วภาพยนตร์</h1>
+    <video id="video" autoplay></video>
+    <p id="status">กำลังสแกนหา QR code...</p>
+    <div id="result"></div>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <button id="back-button">ย้อนกลับไปหน้าแรก</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const status = document.getElementById('status');
+        const resultDiv = document.getElementById('result');
+        const context = canvas.getContext('2d');
+        const socket = io();
+
+        // ขอสิทธิ์การเข้าถึงกล้อง
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                video.setAttribute("playsinline", true);
+                video.play();
+                requestAnimationFrame(tick);
+            })
+            .catch(err => {
+                console.error("Error accessing the camera:", err);
+                status.textContent = 'ไม่สามารถเข้าถึงกล้องได้';
+            });
+
+        function tick() {
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+                if (code) {
+                    status.textContent = 'ตรวจพบ QR code กำลังตรวจสอบตั๋ว...';
+                    socket.emit('checkTicket', code.data);
+                } else {
+                    status.textContent = 'กำลังสแกนหา QR code...';
+                }
+            }
+            requestAnimationFrame(tick);
+        }
+
+        // รับผลการตรวจสอบจากเซิร์ฟเวอร์
+        socket.on('ticketValid', function (message) {
+            status.textContent = message;
+            status.style.color = 'green';
+            resultDiv.textContent = message;
+        });
+
+        socket.on('ticketInvalid', function (message) {
+            status.textContent = message;
+            status.style.color = 'red';
+            resultDiv.textContent = message;
+        });
+        const backButton = document.getElementById('back-button');
+        backButton.addEventListener('click', function () {
+            window.location.href = '/main';  // เปลี่ยนเส้นทางไปที่หน้า /main
+        });
+    </script>
+</body>
+
+</html>
