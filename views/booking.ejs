@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รอบหนัง | โรงภาพยนตร์</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #430f74, #872af2);
+            color: #e4e4e6;
+            font-family: Sarabun;
+        }
+
+        /*ตัวอักษร*/
+        h3 {
+            font-size: 22px;
+            color: #e4e4e6;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #13001f;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 40px;
+            color: #e4e4e6;
+            margin-bottom: 20px;
+        }
+
+        /*แถบบาร์*/
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .navbar-right a {
+            font-size: 22px;
+            color: #6e22b7;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .navbar-center a {
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: goldenrod;
+        }
+        /*แสดงสถานะ*/
+        .progress-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .step {
+            background-color: white;
+            color: #430f74;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 50px;
+        }
+
+        .step.active {
+            background-color: goldenrod;
+            color: white;
+        }
+        /*แสดงภาพยนตร์*/
+        .movie-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .movie-poster img {
+            border-radius: 10px;
+            max-width: 300px;
+        }
+
+        .movie-details {
+            margin-left: 20px;
+        }
+
+        .movie-details h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .movie-details p {
+            margin: 10px 0;
+            color: #555;
+        }
+        /*ปุ่มพาไปหน้ารายละเอียดภาพยนตร์*/
+        .details-btn {
+            background-color: #872af2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .details-btn:hover {
+            background-color: #430f74;
+        }
+
+        /*เวลา*/
+        .date-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .date-item {
+            background-color: #f9f9f9;
+            color: #666;
+            padding: 10px;
+            margin: 0 10px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .date-item.active {
+            background-color: goldenrod;
+            color: white;
+        }
+
+        .date-item:hover {
+            background-color: #e0e0e0;
+        }
+
+        /*เลือกรอบฉาย*/
+        .showtime-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        .title {
+            font-size: 25px;
+            font-weight: bold;
+            color: #430f74;
+            margin-bottom: 10px;
+        }
+
+        .schedule {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .schedule-info {
+            display: flex;
+            align-items: center;
+            font-size: 25px;
+            margin-right: 15px;
+            color: black;
+        }
+
+        .showtime {
+            padding: 5px 10px;
+            background: linear-gradient(to right, #430f74, #872af2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .movie-container {
+                flex-direction: column;
+                align-items: center;
+                padding: 15px;
+            }
+
+            .movie-poster img {
+                max-width: 200px;
+                margin-bottom: 15px;
+            }
+
+            .movie-details {
+                margin-left: 0;
+                text-align: center;
+            }
+
+            .progress-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .step {
+                margin-bottom: 10px;
+            }
+
+            .details-btn {
+                width: 100%;
+                font-size: 18px;
+                padding: 8px 15px;
+            }
+
+            .showtime-container {
+                padding: 15px;
+            }
+
+            .schedule-info {
+                font-size: 20px;
+                margin-right: 10px;
+            }
+
+            .showtime {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center,
+            .navbar-right {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center a,
+            .navbar-right a {
+                font-size: 16px;
+                margin: 5px 0;
+            }
+
+            .movie-container {
+                padding: 10px;
+            }
+
+            .movie-poster img {
+                max-width: 150px;
+            }
+
+            .movie-details h2 {
+                font-size: 20px;
+            }
+
+            .movie-details p {
+                font-size: 14px;
+            }
+
+            .details-btn {
+                font-size: 16px;
+                padding: 6px 10px;
+            }
+
+            .date-container {
+                flex-direction: column;
+            }
+
+            .date-item {
+                padding: 8px;
+                margin: 5px 0;
+            }
+
+            .showtime-container {
+                padding: 10px;
+            }
+
+            .schedule-info {
+                font-size: 18px;
+            }
+
+            .showtime {
+                font-size: 16px;
+                padding: 5px 8px;
+            }
+        }
+    </style>
+
+    <script>
+        function goToDetailPage(MovieID) {
+            window.location.href = `/detail?MovieID=${MovieID}`;
+        }
+
+        function goToSeatPage(ShowtimesID) {
+            window.location.href = `/seat?ShowtimesID=${ShowtimesID}`;
+        }
+
+        function confirmLogout() {
+            let confirmed = confirm("คุณต้องการลงชื่อออกหรือไม่?");
+            if (!confirmed) {
+                return false;
+            }
+            window.location.href = "/logout";
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <header>
+            <h1>โรงภาพยนตร์</h1>
+        </header>
+        <div class="navbar-center">
+            <a href="/main">หน้าหลัก</a>
+            <a href="/movie">ภาพยนตร์</a>
+            <a href="/allhistory">ประวัติการจองตั๋ว</a>
+        </div>
+        <div class="navbar-right">
+            <% if (user) { %>
+                <a href="#" style="font-weight: 800;" onclick="confirmLogout()">ยินดีต้อนรับ, <%= user.username %>!</a>
+                <% } else { %>
+                    <a href="/login">เข้าสู่ระบบ/สมัครสมาชิก</a>
+                    <% } %>
+        </div>
+    </nav>
+
+    <!-- ขั้นตอนการจอง -->
+    <div class="progress-container">
+        <div class="step active">1 เลือกรอบฉาย</div>
+        <div class="step">2 เลือกที่นั่ง</div>
+        <div class="step">3 การชำระเงิน</div>
+        <div class="step">4 สิ้นสุด</div>
+    </div>
+
+    <% data.forEach((item)=> { %>
+        <!-- รายละเอียดภาพยนตร์ -->
+        <div class="movie-container">
+            <div class="movie-poster">
+                <img src="img/<%= item.MovieID %>.jpg" alt="Movie Poster">
+            </div>
+            <div class="movie-details">
+                <h2>
+                    <%= item.Title %>
+                </h2>
+                <p>ประเภท: <%= item.Genre %>
+                </p>
+                <p>เวลา: <%= item.Duration %> นาที</p>
+                <p>คะแนน: <%= item.Rating %>
+                </p>
+                <button class="details-btn" onclick="goToDetailPage('<%= item.MovieID %>')">รายละเอียดภาพยนตร์</button>
+            </div>
+        </div>
+
+        <!-- ตัวเลือกวันที่ -->
+        <div class="date-container">
+            <div class="date-item active" data-date="2024-09-21" id="day1">
+                <p>
+                    <%= new Date(item.Showdate).toLocaleDateString('th-TH', { weekday: 'long' , year: 'numeric' ,
+                        month: 'long' , day: 'numeric' }) %>
+                </p>
+            </div>
+        </div>
+
+        <div class="showtime-container">
+            <div class="title">คณะไอทีลาดกระบัง</div>
+            <div class="schedule">
+                <div class="schedule-info">
+                    <span>โรงภาพยนตร์ | <%= item.Name %></span>
+                </div>
+                <div class="schedule-info">
+                    <div class="language">
+                        <span>TH</span>
+                        <span> | </span>
+                        <span><b>TH</b></span>
+                    </div>
+
+                    <div>
+                        <button class="showtime" onclick="goToSeatPage('<%= item.ShowtimesID.split(',')[0] %>')">
+                            <%= item.Showtimes.substring(0, 5) %>
+                        </button>
+                        <button class="showtime" onclick="goToSeatPage('<%= item.ShowtimesID.split(',')[1] %>')">
+                            <%= item.Showtimes.substring(10, 15) %>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+</body>
+
+</html>

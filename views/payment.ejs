@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ชำระเงิน | โรงภาพยนตร์</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+        rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #430f74, #872af2);
+            color: #e4e4e6;
+            font-family: Sarabun;
+        }
+
+        /* ตัวอักษร */
+        h3 {
+            font-size: 22px;
+            color: #e4e4e6;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #13001f;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 40px;
+            color: #e4e4e6;
+            margin-bottom: 20px;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .navbar-right a {
+            font-size: 22px;
+            color: #6e22b7;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .navbar-center a {
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: goldenrod;
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .step {
+            background-color: white;
+            color: #430f74;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 50px;
+        }
+
+        .step.active {
+            background-color: goldenrod;
+            color: white;
+        }
+
+        .movie-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .movie-poster img {
+            border-radius: 10px;
+            max-width: 300px;
+        }
+
+        .movie-details {
+            margin-left: 20px;
+        }
+
+        .movie-details h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .movie-details p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .payment-container {
+            justify-content: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .payment-container h3 {
+            font-size: 20px;
+            color: #430f74;
+        }
+
+        .payment-container button {
+            padding: 10px 20px;
+            /* Adjust padding for better button size */
+            font-size: 25px;
+            color: white;
+            background-color: #872af2;
+            border-radius: 12px;
+            border: none;
+            /* Remove border for better appearance */
+            cursor: pointer;
+            /* Change cursor on hover */
+        }
+
+        .payment-container button:hover {
+            background-color: #430f74;
+        }
+
+        .pay-qr img {
+            width: 450px;
+            height: auto;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                /* Stack items vertically */
+                align-items: flex-start;
+            }
+
+            .navbar-center {
+                margin-top: 10px;
+            }
+
+            .navbar-right {
+                margin-top: 10px;
+            }
+
+            .progress-container {
+                flex-direction: column;
+                /* Stack steps vertically */
+                align-items: center;
+            }
+
+            .step {
+                margin: 5px 0;
+                /* Adjust margin for steps */
+            }
+
+            .movie-container {
+                flex-direction: column;
+                /* Stack movie poster and details */
+                align-items: center;
+                text-align: center;
+            }
+
+            .movie-poster {
+                margin-bottom: 20px;
+                /* Add space between poster and details */
+            }
+
+            .movie-details {
+                margin-left: 0;
+                /* Remove left margin */
+            }
+
+            .payment-container h1 {
+                font-size: 24px;
+                /* Adjust header size */
+            }
+
+            .payment-container h3 {
+                font-size: 18px;
+                /* Adjust h3 size */
+            }
+
+            .payment-container button {
+                font-size: 20px;
+                /* Adjust button font size */
+            }
+
+            .pay-qr img {
+                width: 100%;
+                /* Make QR image responsive */
+                max-width: 300px;
+                /* Set a max width for the QR image */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+                /* Smaller header size for small screens */
+            }
+
+            h2 {
+                font-size: 30px;
+                /* Smaller h2 size for small screens */
+            }
+
+            .payment-container button {
+                padding: 10px 15px;
+                /* Adjust button size */
+                font-size: 18px;
+                /* Smaller font size for buttons */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <header>
+            <h1>โรงภาพยนตร์</h1>
+        </header>
+        <div class="navbar-center">
+            <a href="/main">หน้าหลัก</a>
+            <a href="/movie">ภาพยนตร์</a>
+            <a href="/allhistory">ประวัติการจองตั๋ว</a>
+        </div>
+        <div class="navbar-right">
+            <% if (user) { %>
+                <a href="#" style="font-weight: 800;" onclick="confirmLogout()">ยินดีต้อนรับ, <%= user.username %>
+                        !</a>
+                <% } else { %>
+                    <a href="/login">เข้าสู่ระบบ/สมัครสมาชิก</a>
+                    <% } %>
+        </div>
+    </nav>
+
+    <!-- ขั้นตอนการจอง -->
+    <div class="progress-container">
+        <div class="step">1 เลือกรอบฉาย</div>
+        <div class="step">2 เลือกที่นั่ง</div>
+        <div class="step active">3 การชำระเงิน</div>
+        <div class="step">4 สิ้นสุด</div>
+    </div>
+
+    <!-- รายละเอียดภาพยนตร์ -->
+    <% if (data.length> 0) { %>
+        <div class="movie-container">
+            <div class="movie-poster">
+                <img src="img/<%= data[0].MovieID %>.jpg" alt="Movie Poster">
+            </div>
+            <div class="movie-details">
+                <h2>
+                    <%= data[0].Title %>
+                </h2>
+                <p>ประเภท: <%= data[0].Genre %>
+                </p>
+                <p><span class="icon-time"></span>
+                    <%= data[0].Duration %> นาที
+                </p>
+                <h2><b>คณะไอทีลาดกระบัง</b></h2>
+                <p>โรงภาพยนตร์ : <%= data[0].Name %> | <%= data[0].Showtime.substring(0, 5) %>
+                </p>
+            </div>
+        </div>
+        <div class="payment-container">
+            <h1>ชำระเงิน</h1>
+            <div>
+                <h3>ที่นั่งที่เลือก: <%= SelectedSeatNumbers %>
+                </h3>
+                <h3>ราคารวม: <%= TotalPrice %> บาท</h3>
+            </div>
+            <div class="pay-qr">
+                <h1>สแกนเพื่อชำระเงิน</h1>
+                <img src="<%= qrUrl %>" alt="QR Code สำหรับชำระเงิน" style="width: 300px;">
+            </div>
+
+            <form action="/mock-payment" method="POST">
+                <input type="hidden" name="employeeID" value="<%= user.employeeID %>">
+                <input type="hidden" name="CustomerID" value="<%= user.CustomerID %>">
+                <input type="hidden" name="SeatID" value="<%= SelectedSeats %>">
+                <input type="hidden" name="SeatNumber" value="<%= SelectedSeatNumbers %>">
+                <input type="hidden" name="CinemaID" value="<%= data[0].CinemaID %>">
+                <input type="hidden" name="showtimeID" value="<%= data[0].ShowtimeID %>">
+                <input type="hidden" name="Showdate" value="<%= new Date(data[0].Showdate).toLocaleDateString('th-TH', { weekday: 'long' , year: 'numeric' ,
+                            month: 'long' , day: 'numeric' }) %>">
+                <input type="hidden" name="Showtime" value="<%= data[0].Showtime.substring(0, 5) %>">
+                <input type="hidden" name="Price" value="<%= TotalPrice %>">
+                <input type="hidden" name="MovieName" value="<%= data[0].Title %>">
+                <input type="hidden" name="CinemaName" value="<%= data[0].Name %>">
+                <button type="submit">ยืนยันการชำระเงิน</button>
+            </form>
+        </div>
+        <% } %>
+            <script>
+                function confirmLogout() {
+                    let confirmed = confirm("คุณต้องการลงชื่อออกหรือไม่?");
+                    if (!confirmed) {
+                        return false;
+                    }
+                    window.location.href = "/logout";
+                }
+            </script>
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>main_bun</title>
+
+    <style>
+        body {
+            background: linear-gradient(to right, #235D3A, #C8EAD1);
+            color: #e4e4e6;
+            font-family: Arial, sans-serif;
+        }
+
+        .flex-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 90px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding-top: 20px;
+        }
+
+        .flex-box .movie {
+            background-color: #397D54;
+            width: 23%;
+            height: auto;
+            margin: 1%;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .flex-box .movie:hover {
+            transform: scale(1.05);
+        }
+
+        .movie p {
+            font-size: 12px;
+        }
+
+
+        h3 {
+            font-size: 22px;
+            color: #e4e4e6;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #13001f;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 40px;
+            color: #e4e4e6;
+            margin-bottom: 20px;
+        }
+
+        img {
+            width: 80%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .navbar-right a {
+            font-size: 22px;
+            color: #235D3A;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .navbar-center a {
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: goldenrod;
+        }
+    </style>
+
+    <script>
+        function goToDetailPage(movieid) {
+            window.location.href = `/detail_bun?MovieId=${movieid}`;
+        }
+        function confirmLogout() {
+            let confirmed = confirm("คุณต้องการลงชื่อออกหรือไม่?");
+            if (!confirmed) {
+                return false;  
+            }
+            window.location.href = "/logout";  
+        }
+    </script>
+</head>
+
+<body>
+
+
+    <nav class="navbar">
+        <header>
+            <h1>สวัสดี! บรรณาธิการ</h1>
+        </header>
+        <div class="navbar-center">
+            <a href="/main">หน้าหลักผู้ใช้</a>
+            <a href="/add">เพิ่มภาพยนตร์</a>
+        </div>
+        <div class="navbar-right">
+            <% if (user) { %>
+                <a href="#" style="font-weight: 800;" onclick="confirmLogout()">ยินดีต้อนรับ, <%= user.username %>!</a>
+                <% } else { %>
+                    <a href="/login">เข้าสู่ระบบ/สมัครสมาชิก</a>
+                    <% } %>
+
+        </div>
+
+    </nav>
+    <div class="flex-box">
+        <% data.forEach((item)=>{ %>
+
+            <div class="movie" onclick="goToDetailPage('<%=item.MovieID%>')">
+                <br>
+                <img src="img/<%=item.MovieID%>.jpg">
+                <br>
+                <p>วันที่เข้าฉาย: <%=item.ReleaseDate%>
+                </p>
+                <h3>
+                    <%=item.Title%>
+                </h3>
+                <p>
+                    <%=item.Genre%>
+                </p>
+            </div>
+
+            <% }); %>
+    </div>
+</body>
+
+</html>

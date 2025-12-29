@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ภาพยนตร์ | โรงภาพยนตร์</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #430f74, #872af2);
+            color: #e4e4e6;
+            font-family: Sarabun;
+        }
+
+        /*ตัวอักษรและรูปภาพ*/
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #13001f;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 40px;
+            color: #e4e4e6;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 22px;
+            color: #e4e4e6;
+        }
+
+        img {
+            width: 80%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /*แถบบาร์*/
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .navbar-right a {
+            font-size: 22px;
+            color: #6e22b7;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .navbar-center a {
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: goldenrod;
+        }
+
+        /*บล็อกของหนัง*/
+        .flex-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 90px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding-top: 20px;
+        }
+
+        .flex-box .movie {
+            background-color: #430f74;
+            width: 23%;
+            height: auto;
+            margin: 1%;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .flex-box .movie:hover {
+            transform: scale(1.05);
+        }
+
+        .movie p {
+            font-size: 12px;
+        }
+
+        /* Mobile and tablet support */
+        @media (max-width: 1200px) {
+            .flex-box .movie {
+                width: 30%;
+                /* แสดง 3 คอลัมน์สำหรับหน้าจอขนาดใหญ่ถึงกลาง */
+            }
+
+            img {
+                height: 300px;
+                /* ลดขนาดภาพในหน้าจอขนาดกลาง */
+            }
+
+            h2 {
+                font-size: 32px;
+                /* ปรับขนาดหัวข้อ */
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .flex-box {
+                padding: 40px;
+                /* ลด padding ให้เหมาะสมกับหน้าจอขนาดเล็ก */
+            }
+
+            .flex-box .movie {
+                width: 45%;
+                /* แสดง 2 คอลัมน์สำหรับแท็บเล็ต */
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            img {
+                height: 250px;
+                /* ปรับขนาดภาพให้เหมาะกับแท็บเล็ต */
+            }
+
+            .navbar-center a,
+            .navbar-right a {
+                font-size: 16px;
+                /* ลดขนาดตัวหนังสือในแถบเนวิเกชัน */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center,
+            .navbar-right {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center a,
+            .navbar-right a {
+                font-size: 16px;
+                margin: 5px 0;
+            }
+            .flex-box {
+                padding: 10px;
+               
+            }
+
+            .flex-box .movie {
+                width: 100%;
+                margin-bottom: 15px;
+               
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            img {
+                height: 200px;
+            }
+
+        }
+    </style>
+
+    <script>
+        function goToBookingPage(MovieID) {
+            window.location.href = `/booking?MovieID=${MovieID}`;
+        }
+
+        function confirmLogout() {
+            let confirmed = confirm("คุณต้องการลงชื่อออกหรือไม่?");
+            if (!confirmed) {
+                return false;  
+            }
+            window.location.href = "/logout"; 
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <header>
+            <h1>โรงภาพยนตร์</h1>
+        </header>
+        <div class="navbar-center">
+            <a href="/main">หน้าหลัก</a>
+            <a href="/movie">ภาพยนตร์</a>
+            <a href="/allhistory">ประวัติการจองตั๋ว</a>
+        </div>
+        <div class="navbar-right">
+            <% if (user) { %>
+                <a href="#" style="font-weight: 800;" onclick="confirmLogout()">ยินดีต้อนรับ, <%= user.username %>
+                        !</a>
+                <% } else { %>
+                    <a href="/login">เข้าสู่ระบบ/สมัครสมาชิก</a>
+                    <% } %>
+
+        </div>
+    </nav>
+
+    <div>
+        <h2>กำลังฉาย</h2>
+    </div>
+    <div class="flex-box">
+        <% data.forEach((item)=>{ %>
+
+            <div class="movie" onclick="goToBookingPage('<%=item.MovieID%>')">
+                <br>
+                <img src="img/<%=item.MovieID%>.jpg">
+                <br>
+                <p>วันที่เข้าฉาย: <%=item.ReleaseDate%>
+                </p>
+                <h3>
+                    <%=item.Title%>
+                </h3>
+                <p>
+                    <%=item.Genre%>
+                </p>
+            </div>
+
+            <% }); %>
+    </div>
+</body>
+
+</html>

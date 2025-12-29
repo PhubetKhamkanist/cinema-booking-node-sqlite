@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>detail</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #235D3A, #C8EAD1);
+            color: #e4e4e6;
+            font-family: Arial, sans-serif;
+        }
+
+        /*ตัวอักษรและรูปภาพ*/
+        img {
+            width: 300px;
+            height: 450px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        h3 {
+            font-size: 22px;
+            color: #235D3A;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #235D3A;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: left;
+            font-size: 20px;
+            color: #235D3A;
+            margin-bottom: 20px;
+        }
+
+
+        /*แถบบาร์*/
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .navbar-right a {
+            font-size: 22px;
+            color: #397D54;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .navbar-center a {
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: goldenrod;
+        }
+
+
+
+        .details-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .movie {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .movie-image img {
+            width: 300px;
+            object-fit: cover;
+        }
+
+
+        .movie-info {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        .movie-info span {
+            display: block;
+            color: #235D3A;
+        }
+
+        .synopsis h2 {
+            margin-top: 20px;
+            color: #235D3A;
+        }
+
+        .synopsis p {
+            font-size: 16px;
+            text-align: justify;
+            color: #235D3A;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #235D3A;
+            margin: 20px 0;
+        }
+        .details-btn {
+            background-color: #73C088;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .details-btn:hover {
+            background-color: #235D3A;
+        }
+    </style>
+
+    <script>
+        function confirmAction() {
+            let confirmed = confirm("คุณต้องการยืนยันหรือไม่?");
+            if (confirmed) {
+                window.location.href = "/main_bun";  // ลิงก์ปลายทาง
+                return true;
+            } else {
+                return false; // ยกเลิกการเปลี่ยนเส้นทาง
+            }
+        }
+        function confirmLogout() {
+            let confirmed = confirm("คุณต้องการลงชื่อออกหรือไม่?");
+            if (!confirmed) {
+                return false; 
+            }
+            window.location.href = "/logout"; 
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <header>
+            <h1>แก้ไขโรงภาพยนตร์</h1>
+        </header>
+        <div class="navbar-center">
+            <a href="/main_bun">หน้าหลักบรรณาธิการ</a>
+            <a href="/add">เพิ่มภาพยนตร์</a>
+        </div>
+        <div class="navbar-right">
+            <% if (user) { %>
+                <a href="#" style="font-weight: 800;" onclick="confirmLogout()">ยินดีต้อนรับ, <%= user.username %>!</a>
+                <% } else { %>
+                    <a href="/login">เข้าสู่ระบบ/สมัครสมาชิก</a>
+                    <% } %>
+
+        </div>
+    </nav>
+    <% data.forEach((item)=>{ %>
+        <div class="container">
+            <div class="movie">
+                <div class="movie-image">
+                    <img src="/img/<%=item.MovieID%>.jpg" alt="<%= item.Title %>" />
+                </div>
+                <div class="movie-details">
+                    <h1>
+                        <%= item.Title %>
+                    </h1>
+                    <div class="movie-info">
+                        <span>วันที่เข้าฉาย: <%= item.ReleaseDate %></span>
+                        <span>หมวดหมู่: <%= item.Genre %></span>
+                        <span>ระยะเวลา: <%= item.Duration %> นาที</span>
+                        <span>คะแนน: <%= item.Rating %></span>
+                        <span>ผู้กำกับ: <%= item.Director %></span>
+                    </div>
+                    <hr>
+                    <div class="synopsis">
+                        <h2>เรื่องย่อ:</h2>
+                        <p>
+                            <%= item.Synopsis %>
+                        </p>
+                    </div>
+                    <a href="/fix?MovieId=<%=item.MovieID%>" class="details-btn" >แก้ไขรายละเอียดภาพยนตร์</a>
+                    <a href="/main_bun" class="details-btn">กลับหน้าหลัก</a>
+                    <a href="/delete_process?MovieId=<%=item.MovieID%>" class="details-btn" style="background: red;" onclick="return confirmAction()">ลบภาพยนตร์</a>
+                </div>
+
+            </div>
+        </div>
+        <% }); %>
+
+</body>
+
+</html>

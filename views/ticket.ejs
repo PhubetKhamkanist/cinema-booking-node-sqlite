@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แสดงตั๋ว | โรงภาพยนตร์</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #430f74, #872af2);
+            color: #e4e4e6;
+            font-family: Arial, sans-serif;
+        }
+
+        /*ตัวอักษร*/
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #13001f;
+            margin-bottom: 30px;
+        }
+
+        p {
+            color: #430f74;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .navbar-right a {
+            font-size: 22px;
+            color: #6e22b7;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .navbar-center a {
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: goldenrod;
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .step {
+            background-color: white;
+            color: #430f74;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 50px;
+        }
+
+        .step.active {
+            background-color: goldenrod;
+            color: white;
+        }
+
+        .ticket-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 450px;
+            margin: auto;
+        }
+
+        .ticket-header {
+            text-align: center;
+        }
+
+        .ticket-header h1 {
+            font-size: 20px;
+            color: #000;
+        }
+
+        .ticket-info {
+            display: flex;
+            margin: 20px 0;
+        }
+
+        .ticket-info img {
+            width: 150px;
+            height: auto;
+        }
+
+        .movie-poster {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .details {
+            flex: 1;
+        }
+
+        .details p {
+            margin: 5px 0;
+            color: #430f74;
+        }
+
+        .ticket-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .ticket-footer p {
+            margin: 5px 0;
+        }
+
+        .back {
+            text-align: center;
+            background-color: #872af2;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            background-color: #430f74;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                /* Stack navbar items vertically */
+                align-items: flex-start;
+            }
+
+            .navbar-center {
+                margin-top: 10px;
+            }
+
+            .navbar-right {
+                margin-top: 10px;
+            }
+
+            .progress-container {
+                flex-direction: column;
+                /* Stack progress steps vertically */
+                align-items: center;
+            }
+
+            .step {
+                margin: 5px 0;
+                /* Adjust margin for steps */
+            }
+
+            .ticket-container {
+                padding: 15px;
+                /* Adjust padding for mobile */
+            }
+
+            .ticket-info {
+                flex-direction: column;
+                /* Stack image and details */
+                align-items: center;
+                /* Center align items */
+                text-align: center;
+                /* Center text */
+            }
+
+            .movie-poster {
+                margin: 0 0 10px 0;
+                /* Adjust margin for mobile */
+            }
+
+            .ticket-footer {
+                margin-top: 15px;
+                /* Adjust margin for footer */
+            }
+
+            .back {
+                padding: 8px 15px;
+                /* Adjust button size */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+                /* Smaller header size for small screens */
+            }
+
+            .navbar-right a {
+                font-size: 18px;
+                /* Adjust link size */
+            }
+
+            .navbar-center a {
+                font-size: 16px;
+                /* Adjust link size */
+            }
+
+            .ticket-header h1 {
+                font-size: 18px;
+                /* Adjust title size */
+            }
+
+            .details p {
+                font-size: 14px;
+                /* Adjust detail font size */
+            }
+
+            .back {
+                font-size: 16px;
+                /* Adjust button font size */
+            }
+        }
+    </style>
+    <script>
+        function confirmLogout() {
+            let confirmed = confirm("คุณต้องการลงชื่อออกหรือไม่?");
+            if (!confirmed) {
+                return false; 
+            }
+            window.location.href = "/logout"; 
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <header>
+            <h1>โรงภาพยนตร์</h1>
+        </header>
+        <div class="navbar-center">
+            <a href="/main">หน้าหลัก</a>
+            <a href="/movie">ภาพยนตร์</a>
+            <a href="/allhistory">ประวัติการจองตั๋ว</a>
+        </div>
+        <div class="navbar-right">
+            <% if (user) { %>
+                <a href="#" style="font-weight: 800;" onclick="confirmLogout()">ยินดีต้อนรับ, <%= user.username %>
+                        !</a>
+                <% } else { %>
+                    <a href="/login">เข้าสู่ระบบ/สมัครสมาชิก</a>
+                    <% } %>
+        </div>
+    </nav>
+
+    <!-- ขั้นตอนการจอง -->
+    <div class="progress-container">
+        <div class="step">1 เลือกรอบฉาย</div>
+        <div class="step">2 เลือกที่นั่ง</div>
+        <div class="step">3 การชำระเงิน</div>
+        <div class="step active">4 สิ้นสุด</div>
+    </div>
+
+    <!-- รายละเอียดภาพยนตร์ -->
+    <% data.forEach((item)=>{ %>
+        <div class="ticket-container">
+            <div class="ticket-header">
+                <h1>
+                    <%=item.Title%>
+                </h1>
+                
+            </div>
+            <div class="ticket-info">
+                <img src="img/<%=item.MovieID%>.jpg" alt="<%=item.MovieID%>" class="movie-poster">
+                <div class="details">
+                    <p><strong>ไอทีลาดกระบัง</strong></p>
+                    <p><strong>โรงภาพยนตร์:</strong>
+                        <%=item.CinemaName%>
+                    </p>
+                    <p><strong>วันที่ฉาย:</strong>
+                        <%= new Date(item.Showdate).toLocaleDateString('th-TH', { weekday: 'long' , year: 'numeric' ,
+                            month: 'long' , day: 'numeric' }) %>
+                    </p>
+                    <p><strong>เวลาที่ฉาย:</strong>
+                        <%= item.Showtime.substring(0, 5) %> น.
+                    </p>
+                    <p><strong>ที่นั่ง:</strong>
+                        <%=item.SeatNumber%>
+                    </p>
+                    <p><strong>วันที่จอง:</strong>
+                        <%= new Date(item.BookingDate).toLocaleDateString('th-TH', { weekday: 'long' , year: 'numeric' ,
+                            month: 'long' , day: 'numeric' }) %>
+                    </p>
+                    <p><strong>เวลาที่จอง:</strong>
+                        <%= new Date(item.BookingDate).toLocaleTimeString('th-TH', { hour: '2-digit' , minute: '2-digit'
+                            , hour12: false }) %> น.
+                    </p>
+                    <p><strong>ราคา:</strong>
+                        <%=item.price%> บาท
+                    </p>
+                </div>
+            </div>
+            <div class="ticket-footer">
+                <p><strong>รหัสการสั่งซื้อ:</strong> </p>
+                <img src="<%=item.Qrcode%>" alt="">
+            </div>
+            <div>
+                <a href="/main" class="back">กลับหน้าหลัก</a>
+            </div>
+        </div>
+        <% }); %>
+</body>
+
+</html>

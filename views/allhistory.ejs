@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ประวัติการจองตั๋ว : โรงภาพยนตร์</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #430f74, #872af2);
+            color: #e4e4e6;
+            font-family: Sarabun;
+        }
+        /*ตัวอักษร*/
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #430f74;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 30px;
+            color: #430f74;
+        }
+
+        h3 {
+            font-size: 25px;
+            color: #430f74;
+        }
+
+        p {
+            color: #430f74;
+            font-size: 18px;
+        }
+        /*แถบบาร์*/
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .navbar-right a {
+            font-size: 22px;
+            color: #6e22b7;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .navbar-center a {
+            font-size: 18px;
+            color: #430f74;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: goldenrod;
+        }
+        /*ช่องแสดงผลประวัติการจอง*/
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 25px;
+        }
+
+        .movie {
+            display: flex;
+            margin: 20px 0;
+        }
+
+        .movie img {
+            width: 180px;
+            height: auto;
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+
+        .details {
+            flex: 1;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        /*ป็อปอัพแสดงรายละเอียดภาพยนตร์*/
+        .popup {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Media queries */
+        @media (max-width: 768px) {
+            .movie {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .movie img {
+                width: 200px;
+                margin-bottom: 10px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            button {
+                padding: 8px 12px;
+            }
+
+            .popup-content {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center,
+            .navbar-right {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center a,
+            .navbar-right a {
+                font-size: 16px;
+                margin: 5px 0;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .movie img {
+                width: 180px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            button {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .popup-content {
+                width: 90%;
+            }
+        }
+    </style>
+    <script>
+        function confirmLogout() {
+            let confirmed = confirm("คุณต้องการลงชื่อออกหรือไม่?");
+            if (!confirmed) {
+                return false; 
+            }
+            window.location.href = "/logout"; 
+        }
+
+        // จัดการเหตุการณ์เมื่อคลิกปุ่มรายละเอียด
+        document.addEventListener('DOMContentLoaded', function () {
+            document.body.addEventListener('click', function (event) {
+                if (event.target.matches('.details button')) {
+                    const popup = event.target.closest('.movie').querySelector('.popup');
+                    popup.style.display = 'block';
+                }
+
+                if (event.target.matches('.close')) {
+                    const popup = event.target.closest('.popup');
+                    popup.style.display = 'none';
+                }
+
+                // ปิดป๊อปอัปเมื่อผู้ใช้คลิกที่ส่วนอื่นของหน้าจอ
+                const popups = document.querySelectorAll('.popup');
+                popups.forEach(popup => {
+                    if (event.target === popup) {
+                        popup.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <header>
+            <h1>โรงภาพยนตร์</h1>
+        </header>
+        <div class="navbar-center">
+            <a href="/main">หน้าหลัก</a>
+            <a href="/movie">ภาพยนตร์</a>
+            <a href="/allhistory">ประวัติการจองตั๋ว</a>
+            <% if (user) { %>
+                <% if (user.department=='2' ) { %>
+                    <a href="/main_bun" class="bun">แก้ไขรายละเอียดภาพยนตร์</a>
+                    <% } %>
+                        <% } %>
+        </div>
+        <div class="navbar-right">
+            <% if (user) { %>
+                <a href="/logout" style="font-weight: 800;" onclick="confirmLogout()">ยินดีต้อนรับ, <%= user.username %>
+                        !</a>
+                <% } else { %>
+                    <a href="/login">เข้าสู่ระบบ/สมัครสมาชิก</a>
+                    <% } %>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>ประวัติการจอง/ซื้อ</h2>
+        <% if (user) { %>
+            <% if (data.length===0) { %>
+                <h2 style="color: goldenrod;">คุณยังไม่มีประวัติการจอง</h2>
+                <% } else { %>
+                    <% if (user.department=='3' ) { %>
+                        <!-- แสดงประวัติการจองสำหรับแผนก 3 -->
+                        <h2 style="color: goldenrod;">ประวัติการจองของทุกคน</h2>
+                        <% data.forEach((item)=> { %>
+                            <div class="movie">
+                                <img src="img/<%= item.MovieID %>.jpg" alt="">
+                                <div class="details">
+                                    <h3>
+                                        <%= item.Title %>
+                                    </h3>
+                                    <p>จองโดย: <%= item.BookerName %>
+                                    </p> <!-- แสดงชื่อผู้จอง -->
+                                    <p>คณะไอทีลาดกระบัง</p>
+                                    <p><strong>วันที่ฉาย:</strong>
+                                        <%= new Date(item.Showdate).toLocaleDateString('th-TH', { weekday: 'long' ,
+                                            year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+                                    </p>
+                                    <p><strong>เวลาที่ฉาย:</strong>
+                                        <%= item.Showtime.substring(0, 5) %> น.
+                                    </p>
+                                    <button>ดูรายละเอียด</button>
+                                </div>
+                                <div class="popup">
+                                    <div class="popup-content">
+                                        <span class="close">&times;</span>
+                                        <h3>
+                                            <%= item.Title %>
+                                        </h3>
+                                        <p><strong>ราคา:</strong>
+                                            <%= item.price %> บาท
+                                        </p>
+                                        <p><strong>โรงภาพยนตร์:</strong>
+                                            <%=item.CinemaName%>
+                                        </p>
+                                        <p><strong>ที่นั่ง:</strong>
+                                            <%= item.SeatNumber %>
+                                        </p>
+                                        <p><strong>วันที่จอง:</strong>
+                                            <%= new Date(item.BookingDate).toLocaleDateString('th-TH', { weekday: 'long'
+                                                , year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+                                        </p>
+                                        <p><strong>เวลาที่จอง:</strong>
+                                            <%= new Date(item.BookingDate).toLocaleTimeString('th-TH', { hour: '2-digit'
+                                                , minute: '2-digit' , hour12: false }) %> น.
+                                        </p>
+                                        <img src="<%= item.Qrcode %>" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <!-- แสดงประวัติการจองสำหรับผู้ใช้ทั่วไป -->
+                                    <% data.forEach((item)=> { %>
+                                        <div class="movie">
+                                            <img src="img/<%= item.MovieID %>.jpg" alt="">
+                                            <div class="details">
+                                                <h3>
+                                                    <%= item.Title %>
+                                                </h3>
+                                                <p>คณะไอทีลาดกระบัง</p>
+                                                <p><strong>วันที่ฉาย:</strong>
+                                                    <%= new Date(item.Showdate).toLocaleDateString('th-TH', {
+                                                        weekday: 'long' , year: 'numeric' , month: 'long' ,
+                                                        day: 'numeric' }) %>
+                                                </p>
+                                                <p><strong>เวลาที่ฉาย:</strong>
+                                                    <%= item.Showtime.substring(0, 5) %> น.
+                                                </p>
+                                                <button>ดูรายละเอียด</button>
+                                            </div>
+                                            <div class="popup">
+                                                <div class="popup-content">
+                                                    <span class="close">&times;</span>
+                                                    <h3>
+                                                        <%= item.Title %>
+                                                    </h3>
+                                                    <p><strong>ราคา:</strong>
+                                                        <%= item.price %> บาท
+                                                    </p>
+                                                    <p><strong>โรงภาพยนตร์:</strong>
+                                                        <%=item.CinemaName%>
+                                                    </p>
+                                                    <p><strong>ที่นั่ง:</strong>
+                                                        <%= item.SeatNumber %>
+                                                    </p>
+                                                    <p><strong>วันที่จอง:</strong>
+                                                        <%= new Date(item.BookingDate).toLocaleDateString('th-TH', {
+                                                            weekday: 'long' , year: 'numeric' , month: 'long' ,
+                                                            day: 'numeric' }) %>
+                                                    </p>
+                                                    <p><strong>เวลาที่จอง:</strong>
+                                                        <%= new Date(item.BookingDate).toLocaleTimeString('th-TH', {
+                                                            hour: '2-digit' , minute: '2-digit' , hour12: false }) %> น.
+                                                    </p>
+                                                    <img src="<%= item.Qrcode %>" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                            <% } %>
+                                                <% } %>
+                                                    <% } else { %>
+                                                        <h2 style="color: red;">กรุณาเข้าสู่ระบบ</h2>
+                                                        <% } %>
+    </div>
+    <div style="text-align: center; margin: 30px;">
+        <form action="/main" method="GET">
+            <button>กลับหน้าหลัก</button>
+        </form>
+    </div>
+</body>
+
+</html>

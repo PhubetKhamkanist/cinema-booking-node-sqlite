@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เลือกที่นั่ง | โรงภาพยนตร์</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #430f74, #872af2);
+            color: #e4e4e6;
+            font-family: Sarabun;
+        }
+
+        /*ตัวอักษร*/
+        h3 {
+            font-size: 22px;
+            color: #e4e4e6;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            color: #13001f;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 40px;
+            color: #e4e4e6;
+            margin-bottom: 20px;
+        }
+
+        /*แถบบาร์*/
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .navbar-right a {
+            font-size: 22px;
+            color: #6e22b7;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .navbar-center a {
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: goldenrod;
+        }
+
+
+        .progress-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .step {
+            background-color: white;
+            color: #430f74;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 50px;
+        }
+
+        .step.active {
+            background-color: goldenrod;
+            color: white;
+        }
+
+        .movie-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .movie-poster img {
+            border-radius: 10px;
+            max-width: 300px;
+        }
+
+        .movie-details {
+            margin-left: 20px;
+        }
+
+        .movie-details h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .movie-details p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+
+        .box-seat {
+            margin: 45px;
+            background-color: white;
+            border-radius: 10px;
+
+        }
+
+        .screen {
+            padding: 10px 40px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .screen h2 {
+            font-size: 40px;
+            color: #430f74;
+            border: 5px solid;
+        }
+
+        .seating-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: center;
+            margin-left: 23%;
+            padding-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+            gap: 10px;
+
+        }
+
+        .seat {
+            width: 70px;
+            height: 70px;
+            background-color: #B19CD9;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: #e4e4e6;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .seat:hover {
+            background-color: #430f74;
+        }
+
+        .seat.selected {
+            background-color: #28a745;
+        }
+
+        .seat::after {
+            content: "✓";
+            /* เครื่องหมายถูก */
+            font-size: 24px;
+            color: white;
+            display: none;
+            text-align: center;
+        }
+
+        .seat.selected::after {
+            display: block;
+            /* แสดงเครื่องหมายถูกเมื่อเลือก */
+        }
+
+        .seat.booked {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+
+        .price h3 {
+            font-size: 25px;
+            color: black;
+            margin-right: 50px;
+        }
+
+        .confirm-btn {
+            text-decoration: none;
+            justify-content: center;
+            text-align: center;
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: #430f74;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 800px;
+        }
+
+        .confirm-btn:hover {
+            background-color: #872af2;
+        }
+
+        @media (max-width: 1100px) {
+            .seating-container {
+                margin-left: 8%;
+                padding-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .navbar-center a,
+            .navbar-right a {
+                font-size: 18px;
+                margin: 5px 0;
+            }
+
+
+            h1 {
+                font-size: 24px;
+                margin: 10px 0;
+            }
+
+            h2 {
+                font-size: 30px;
+                margin: 10px 0;
+            }
+
+            .movie-container {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+
+            .movie-poster img {
+                max-width: 90%;
+                height: auto;
+            }
+
+            .movie-details {
+                margin-left: 0;
+                text-align: center;
+                padding: 10px;
+            }
+
+
+            .seating-container {
+                margin-left: 70px;
+                padding-bottom: 10px;
+            }
+
+            .row {
+                width: 90%;
+                justify-content: center;
+                padding: 5px;
+            }
+
+            .seat {
+                width: 40px;
+                height: 40px;
+                font-size: 10px;
+                margin: 2px;
+            }
+
+            .confirm-btn {
+                width: 90%;
+                padding: 15px;
+                font-size: 18px;
+            }
+
+            .price h3 {
+                font-size: 16px;
+                margin: 5px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center,
+            .navbar-right {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center a,
+            .navbar-right a {
+                font-size: 16px;
+                margin: 5px 0;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .movie-details h2 {
+                font-size: 20px;
+            }
+
+            .movie-details p {
+                font-size: 14px;
+            }
+
+            .step {
+                padding: 5px 10px;
+                font-size: 14px;
+            }
+
+            .screen h2 {
+                font-size: 24px;
+            }
+
+            .price h3 {
+                font-size: 14px;
+            }
+
+            .seating-container {
+                margin-left: 0px;
+                padding-bottom: 10px;
+            }
+
+            .row {
+                width: 100%;
+                justify-content: center;
+                padding: 0px;
+            }
+            .seat {
+                width: 15px;
+                height: 15px;
+                font-size: 0px;
+                margin: 2px;
+            }
+
+            .progress-container {
+                flex-direction: column;
+                align-items: center;
+                margin: 10px 0;
+            }
+
+            .box-seat {
+                margin: 0px;
+                margin-top: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+
+    <script>
+        function confirmLogout() {
+            let confirmed = confirm("คุณต้องการลงชื่อออกหรือไม่?");
+            if (!confirmed) {
+                return false;
+            }
+            window.location.href = "/logout";
+        }
+        function toggleSeat(seat) {
+            seat.classList.toggle('selected');
+        }
+        const isLoggedIn = '<%= user ? "true" : "false" %>' === 'true';;
+        const userDepartmentID = '<%= user ? user.department : null %>';
+        const userCustomer = '<%= user ? user.CustomerID : null %>';
+        function confirmSeats(event) {
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+            // ตรวจสอบว่ามีการเลือกที่นั่งหรือไม่
+            if (selectedSeats.length === 0) {
+                alert('กรุณาเลือกที่นั่งก่อนทำการยืนยัน');
+                event.preventDefault();  // หยุดการส่งฟอร์ม
+                return false;
+            }
+            // ตรวจสอบว่าผู้ใช้ได้ล็อกอินหรือไม่
+            if (!isLoggedIn) {
+                alert('กรุณาล็อกอินก่อนทำการยืนยัน');
+                event.preventDefault();  // หยุดการส่งฟอร์ม
+                return false;
+            }
+            // ตรวจสอบว่าผู้ใช้มีสิทธิ์จองหรือไม่
+            if (userDepartmentID == '2' || userDepartmentID == '3') {
+                alert('คุณไม่มีสิทธิ์ทำการจองที่นั่ง');
+                event.preventDefault();
+                return false;
+            }
+            // เก็บ seatID จริง และหมายเลขที่นั่งปลอม
+            const selectedSeatIds = Array.from(selectedSeats).map(seat => seat.id);  // seatID จริง
+            const selectedSeatNumbers = Array.from(selectedSeats).map(seat => seat.innerText);  // หมายเลขที่นั่งปลอม
+            const totalPrice = selectedSeatIds.length * Number('<%= data[0].Price %>');
+            // อัปเดตค่าในฟอร์มที่ซ่อนไว้
+            document.getElementById('selectedSeatsInput').value = selectedSeatIds.join(', ');  // seatID จริง
+            document.getElementById('selectedSeatNumbersInput').value = selectedSeatNumbers.join(', ');  // หมายเลขที่นั่งปลอม
+            document.getElementById('totalPriceInput').value = totalPrice;
+            // ส่งฟอร์มไปยังหน้าชำระเงิน
+            document.getElementById('seatForm').submit();
+        }
+
+
+        window.onload = function () {
+            let selectedSeats = [];
+            let seatPrice = Number('<%= data[0].Price %>');
+            let totalPrice = 0;
+
+            document.querySelectorAll('.seat').forEach(seat => {
+                seat.addEventListener('click', function () {
+                    const seatNumber = this.innerText;  // หมายเลขที่นั่งปลอม (1-20)
+                    const seatId = this.id;  // seatID จริง (s01, s02, ...)
+
+                    if (!selectedSeats.includes(seatId)) {
+                        selectedSeats.push(seatId);  // ใช้ seatID จริงในการเก็บ
+                        this.classList.add('selected'); // Highlight selected seat
+                        totalPrice += seatPrice;
+                    } else {
+                        selectedSeats = selectedSeats.filter(id => id !== seatId);  // ลบ seatID จริง
+                        this.classList.remove('selected'); // Remove highlight
+                        totalPrice -= seatPrice;
+                    }
+
+                    // แสดงหมายเลขที่นั่งปลอมในหน้าจอ
+                    const seatNumbers = Array.from(document.querySelectorAll('.seat.selected')).map(seat => seat.innerText);
+                    document.getElementById('selectedSeats').innerText = seatNumbers.join(', ');  // แสดงหมายเลขที่นั่งปลอม
+                    document.getElementById('totalPrice').innerText = totalPrice + ' บาท';
+                });
+            });
+        };
+
+    </script>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <header>
+            <h1>โรงภาพยนตร์</h1>
+        </header>
+        <div class="navbar-center">
+            <a href="/main">หน้าหลัก</a>
+            <a href="/movie">ภาพยนตร์</a>
+            <a href="/allhistory">ประวัติการจองตั๋ว</a>
+        </div>
+        <div class="navbar-right">
+            <% if (user) { %>
+                <a href="#" style="font-weight: 800;" onclick="confirmLogout()">ยินดีต้อนรับ, <%= user.username %>
+                        !</a>
+                <% } else { %>
+                    <a href="/login">เข้าสู่ระบบ/สมัครสมาชิก</a>
+                    <% } %>
+
+        </div>
+    </nav>
+
+    <!-- ขั้นตอนการจอง -->
+    <div class="progress-container">
+        <div class="step">1 เลือกรอบฉาย</div>
+        <div class="step active">2 เลือกที่นั่ง</div>
+        <div class="step">3 การชำระเงิน</div>
+        <div class="step">4 สิ้นสุด</div>
+    </div>
+
+    <!-- รายละเอียดภาพยนตร์ -->
+    <% if (data.length> 0) { %>
+        <div class="movie-container">
+            <div class="movie-poster">
+                <img src="img/<%= data[0].MovieID %>.jpg" alt="Movie Poster">
+            </div>
+            <div class="movie-details">
+                <h2>
+                    <%= data[0].Title %>
+                </h2>
+                <p>ประเภท: <%= data[0].Genre %>
+                </p>
+                <p><span class="icon-time"></span>
+                    <%= data[0].Duration %> นาที
+                </p>
+                <h2><b>คณะไอทีลาดกระบัง</b></h2>
+                <p>โรงภาพยนตร์ <%= data[0].Name %> | <%= data[0].Showtime.substring(0, 5) %>
+                </p>
+            </div>
+        </div>
+        <% } %>
+
+
+            <div class="box-seat">
+                <div class="screen">
+                    <h2>จอภาพยนตร์</h2>
+                </div>
+                <div class="seating-container">
+                    <div class="row">
+                        <% data.forEach((item, index)=> { %>
+                            <div class="seat 
+                                <%= item.seat_status === 'Booked' ? 'booked' : '' %>" id="<%= item.SeatID %>"
+                                onclick="<%= item.seat_status === 'Booked' ? '' : 'toggleSeat(this)' %>"
+                                style="<%= item.seat_status === 'Booked' ? 'pointer-events: none; background-color: gray;' : '' %>">
+                                s<%= (index + 1).toString().padStart(2, '0' ) %> <!-- แสดงลำดับที่นั่งเป็น 2 ตัว -->
+                            </div>
+                            <% }); %>
+                    </div>
+                    <% if (data.length> 0) { %>
+                        <div class="price">
+                            <h3>ที่นั่งละ <%= data[0].Price %> บาท</h3>
+                            <h3>ที่นั่งที่เลือก: <span id="selectedSeats">ยังไม่มีที่นั่งที่เลือก</span></h3>
+                            <h3>ราคารวม: <span id="totalPrice">0 บาท</span> </h3>
+                        </div>
+                        <div>
+                            <form action="/payment" method="POST" id="seatForm">
+                                <input type="hidden" name="MovieID" value="<%= data[0].MovieID %>">
+                                <input type="hidden" name="ShowtimeID" value="<%= data[0].ShowtimeID %>">
+                                <input type="hidden" name="SelectedSeats" id="selectedSeatsInput" value="">
+                                <input type="hidden" name="SelectedSeatNumbers" id="selectedSeatNumbersInput" value="">
+                                <input type="hidden" name="TotalPrice" id="totalPriceInput" value="">
+                                <button type="submit" class="confirm-btn"
+                                    onclick="confirmSeats(event)">ยืนยันที่นั่ง</button>
+                            </form>
+                        </div>
+                        <% } %>
+                </div>
+            </div>
+</body>
+
+</html>
